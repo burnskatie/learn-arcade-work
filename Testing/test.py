@@ -1,5 +1,19 @@
-def count_up(start, end):
-    for cur_number in range (start, end + 1):
-        print(cur_number)
+class Person():
+    def __init__(self):
+        self.name = ""
+        self.money = 0
 
-count_up(5,10)
+
+def main():
+    bob = Person()
+    bob.name = "Bob"
+    bob.money = 100
+
+    nancy = bob
+    nancy.name = "Nancy"
+
+    print(bob.name, "has", bob.money, "dollars.")
+    print(nancy.name, "has", nancy.money, "dollars.")
+
+
+main()
