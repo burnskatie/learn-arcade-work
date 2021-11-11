@@ -1,118 +1,118 @@
 """ Sprite Sample Program """
 
-import random
 import arcade
 
 # --- Constants ---
+SPRITE_SCALING_BOX = 0.5
 SPRITE_SCALING_PLAYER = 0.5
-SPRITE_SCALING_COIN = 0.2
-COIN_COUNT = 50
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
-
-
-class Coin(arcade.Sprite):
-
-
-
-    def update(self):
-
-        self.center_y -= 1
-
+MOVEMENT_SPEED = 5
 
 
 class MyGame(arcade.Window):
-    """ Our custom Window Class"""
+    """ This class represents the main window of the game. """
 
     def __init__(self):
         """ Initializer """
         # Call the parent class initializer
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Sprite Example")
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Sprites With Walls Example")
 
-        # Variables that will hold sprite lists
         self.player_list = None
-        self.coin_list = None
+        self.wall_list = None
 
-        # Set up the player info
         self.player_sprite = None
+
+        self.physical_engine = None
+
         self.score = 0
 
-        # Don't show the mouse cursor
-        self.set_mouse_visible(False)
-
-        arcade.set_background_color(arcade.color.AMAZON)
+        self.camera_for_sprites = arcade.Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
+        self.camera_for_gui = arcade.Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
 
     def setup(self):
-        """ Set up the game and initialize the variables. """
+        # Set the background color
+        arcade.set_background_color(arcade.color.PINK_PEARL)
 
-        # Sprite lists
         self.player_list = arcade.SpriteList()
-        self.coin_list = arcade.SpriteList()
+        self.wall_list = arcade.SpriteList()
 
-        # Score
-        self.score = 0
-
-        # Set up the player
-        # Character image from kenney.nl
-        self.player_sprite = arcade.Sprite("character.png", SPRITE_SCALING_PLAYER)
-        self.player_sprite.center_x = 50
-        self.player_sprite.center_y = 50
+        self.player_sprite = arcade.Sprite("character1.png", SPRITE_SCALING_PLAYER)
+        self.player_sprite.center_x = 64
+        self.player_sprite.center_y = 64
         self.player_list.append(self.player_sprite)
 
-        # Create the coins
-        for i in range(COIN_COUNT):
+        wall = arcade.Sprite("boxCrate_double.png", SPRITE_SCALING_BOX)
+        wall.center_x = 300
+        wall.center_y = 200
+        self.wall_list.append(wall)
 
-            # Create the coin instance
-            # Coin image from kenney.nl
+        for i in range(10):
+            wall = arcade.Sprite("boxCrate_double.png", SPRITE_SCALING_BOX)
+            wall.center_x = i * 64 + 128
+            wall.center_y = 200
+            self.wall_list.append(wall)
 
-            coin = Coin("coin_01.png", SPRITE_SCALING_COIN)
+        for x in range(100, 600, 64):
+            wall = arcade.Sprite("boxCrate_double.png", SPRITE_SCALING_BOX)
+            wall.center_x = x
+            wall.center_y = 500
+            self.wall_list.append(wall)
 
+        coordinate_list = [[400, 500],
+                           [470, 500],
+                           [400, 570],
+                           [470, 570]]
 
-            # Position the coin
-            coin.center_x = random.randrange(SCREEN_WIDTH)
-            coin.center_y = random.randrange(SCREEN_HEIGHT)
+        for coordinate in coordinate_list:
+            wall = arcade.Sprite("boxCrate_double.png", SPRITE_SCALING_BOX)
+            wall.center_x = coordinate[0]
+            wall.center_y = coordinate[1]
+            self.wall_list.append(wall)
 
-            # Add the coin to the lists
-            self.coin_list.append(coin)
+        self.physics_engine = arcade.PhysicsEngineSimple(self.player_sprite, self.wall_list)
+
+    def on_update(self, delta_time):
+        self.physics_engine.update()
+
+        self.scroll_to_player()
+
+        CAMERA_SPEED = 1
+        lower_left_corner = (self.player_sprite.center_x - self.width / 2,
+                             self.player_sprite.center_y - self.height / 2)
+        self.camera_for_sprites.move_to(lower_left_corner, CAMERA_SPEED)
 
     def on_draw(self):
-        """ Draw everything """
         arcade.start_render()
-        self.coin_list.draw()
-        self.player_list.draw()
 
-        # Put the text on the screen.
-        output = f"Score: {self.score}"
-        arcade.draw_text(output, 10, 20, arcade.color.WHITE, 14)
+        self.camera_for_sprites.use()
 
-    def on_mouse_motion(self, x, y, dx, dy):
-        """ Handle Mouse Motion """
+        self.wall_list.draw()
+        self.player_sprite.draw()
 
-        # Move the center of the player sprite to match the mouse x, y
-        self.player_sprite.center_x = x
-        self.player_sprite.center_y = y
+        self.camera_for_gui.use()
+        arcade.draw_text(f"Score: {self.score}", 10, 10, arcade.color.WHITE, 24
 
-    def update(self, delta_time):
-        """ Movement and game logic """
+    def on_key_press(self, key, modifiers):
+        if key == arcade.key.UP:
+            self.player_sprite.change_y = MOVEMENT_SPEED
+        if key == arcade.key.DOWN:
+            self.player_sprite.change_y = -MOVEMENT_SPEED
+        if key == arcade.key.LEFT:
+            self.player_sprite.change_x = -MOVEMENT_SPEED
+        if key == arcade.key.RIGHT:
+            self.player_sprite.change_x = MOVEMENT_SPEED
 
-        # Call update on all sprites (The sprites don't do much in this
-        # example though.)
-        self.coin_list.update()
-
-        # Generate a list of all sprites that collided with the player.
-        hit_list = arcade.check_for_collision_with_list(self.player_sprite,
-                                                        self.coin_list)
-
-        # Loop through each colliding sprite, remove it, and add to the score.
-        for coin in hit_list:
-            coin.remove_from_sprite_lists()
-            self.score += 1
+    def on_key_release(self, key, modifiers):
+        if key == arcade.key.UP or key == arcade.key.DOWN:
+            self.player_sprite.change_y = 0
+        elif key == arcade.key.LEFT or key == arcade.key.RIGHT:
+            self.player_sprite.change_x = 0
 
 
 def main():
-    """ Main method """
     window = MyGame()
     window.setup()
     arcade.run()

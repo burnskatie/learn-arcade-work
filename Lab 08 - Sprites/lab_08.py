@@ -108,8 +108,7 @@ class MyGame(arcade.Window):
         self.player_sprite.center_y = 80
         self.player_list.append(self.player_sprite)
 
-        for i in range(50
-                       ):
+        for i in range(50):
 
             key = Key("keyYellow.png", SPRITE_SCALING / 3)
 
@@ -156,8 +155,6 @@ class MyGame(arcade.Window):
 
         if len(self.key_list) == 0:
             arcade.draw_text("GAME OVER", 300, 300, arcade.color.WHITE, 25)
-
-
 
     def on_mouse_motion(self, x, y, dx, dy):
         if len(self.key_list) > 0:
