@@ -1,43 +1,19 @@
 """ Sprite Sample Program """
 
 import arcade
+import random
 
 # --- Constants ---
 SPRITE_SCALING_BOX = 0.5
 SPRITE_SCALING_PLAYER = 0.5
+SPRITE_SCALING_COIN = 0.2
+COIN_COUNT = 40
 
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 1024
 
 MOVEMENT_SPEED = 5
-
-
-class Coin(arcade.Sprite):
-
-    def __init__(self, filename, sprite_scaling):
-        """ Constructor. """
-        # Call the parent class (Sprite) constructor
-        super().__init__(filename, sprite_scaling)
-
-        # Current angle in radians
-        self.circle_angle = 0
-
-        # How far away from the center to orbit, in pixels
-        self.circle_radius = 0
-
-        # How fast to orbit, in radians per frame
-        self.circle_speed = 0.008
-
-        # Set the center of the point we will orbit around
-        self.circle_center_x = 0
-        self.circle_center_y = 0
-
-    def update(self):
-
-        self.center_x = self.circle_radius * math.sin(self.circle_angle) \
-            + self.circle_center_x
-        self.center_y = self.circle_radius * math.cos(self.circle_angle) \
-            + self.circle_center_y
+CAMERA_SPEED = 1
 
 
 class MyGame(arcade.Window):
@@ -55,11 +31,10 @@ class MyGame(arcade.Window):
 
         # Set up the player
         self.player_sprite = None
+        self.score = 0
 
         # This variable holds our simple "physics engine"
         self.physics_engine = None
-
-        self.score = 0
 
         # Create the cameras. One for the GUI, one for the sprites.
         # We scroll the 'sprite world' but not the GUI.
@@ -175,7 +150,6 @@ class MyGame(arcade.Window):
             wall.center_y = 808
             self.wall_list.append(wall)
 
-
         for x in range(173, 300, 64):
             wall = arcade.Sprite("planetCenter.png", SPRITE_SCALING_BOX)
             wall.center_x = x
@@ -223,22 +197,26 @@ class MyGame(arcade.Window):
         # the walls we can't run into.
         self.physics_engine = arcade.PhysicsEngineSimple(self.player_sprite, self.wall_list)
 
-    def start_new_game(self):
+        for i in range(COIN_COUNT):
+            coin = arcade.Sprite("star.png", SPRITE_SCALING_COIN)
 
-        self.player_list = arcade.SpriteList()
-        self.wall_list = arcade.SpriteList()
-        self.coin_list = arcade.SpriteList()
+            coin_placed_successfully = False
 
-        for i in range(30):
+        # Keep trying until success
+            while not coin_placed_successfully:
 
-            coin = Coin("star.png", SPRITE_SCALING_BOX / 3)
+                coin.center_x = random.randrange(960)
+                coin.center_y = random.randrange(960)
 
-            coin.circle_center_x = random.randrange(SCREEN_WIDTH)
-            coin.circle_center_y = random.randrange(SCREEN_HEIGHT)
+                wall_hit_list = arcade.check_for_collision_with_list(coin, self.wall_list)
 
-            coin.circle_radius = random.randrange(10, 200)
+                coin_hit_list = arcade.check_for_collision_with_list(coin, self.coin_list)
 
-            self.key_list.append(coin)
+                if len(wall_hit_list) == 0 and len(coin_hit_list) == 0:
+                    coin_placed_successfully = True
+
+        # Add the coin to the lists
+            self.coin_list.append(coin)
 
     def on_draw(self):
         arcade.start_render()
@@ -249,12 +227,11 @@ class MyGame(arcade.Window):
         # Draw the sprites
         self.wall_list.draw()
         self.player_list.draw()
-        self.coin_list()
+        self.coin_list.draw()
 
         # Select the (unscrolled) camera for our GUI
         self.camera_for_gui.use()
         arcade.draw_text(f"Score: {self.score}", 10, 10, arcade.color.WHITE, 24)
-
 
     def on_update(self, delta_time):
         """ Movement and game logic """
@@ -263,12 +240,13 @@ class MyGame(arcade.Window):
         # example though.)
         self.physics_engine.update()
 
-        # Scroll the window to the player.
-        #
-        # If CAMERA_SPEED is 1, the camera will immediately move to the desired position.
-        # Anything between 0 and 1 will have the camera move to the location with a smoother
-        # pan.
-        CAMERA_SPEED = 1
+        self.coin_list.update()
+        coin_hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.coin_list)
+
+        for coin in coin_hit_list:
+            coin.remove_from_sprite_lists()
+            self.score += 1
+
         lower_left_corner = (self.player_sprite.center_x - self.width / 2,
                              self.player_sprite.center_y - self.height / 2)
         self.camera_for_sprites.move_to(lower_left_corner, CAMERA_SPEED)
