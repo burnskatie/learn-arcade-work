@@ -49,7 +49,7 @@ class MyGame(arcade.Window):
         # Sprite lists
         self.player_list = arcade.SpriteList()
         self.wall_list = arcade.SpriteList()
-        self.coin_list = arcade.SpriteList
+        self.coin_list = arcade.SpriteList()
 
         # Reset the score
         self.score = 0
