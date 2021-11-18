@@ -15,8 +15,6 @@ def main():
         line = line.strip()
         dictionary_list.append(line)
 
-    my_file.close()
-
     print("--- Linear Search ---")
 
 # --- Linear search
