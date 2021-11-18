@@ -4,11 +4,11 @@ import arcade
 ROW_COUNT = 10
 COLUMN_COUNT = 10
 
-# This sets the WIDTH and HEIGHT of each grid location
+# This sets the WIDTH and HEIGHT of each grid location.
 WIDTH = 20
 HEIGHT = 20
 
-# This sets the margin between each cell
+# This sets the margin between each cell.
 # and on the edges of the screen.
 MARGIN = 5
 
