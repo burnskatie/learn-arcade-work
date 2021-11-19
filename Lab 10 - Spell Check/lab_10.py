@@ -6,34 +6,56 @@ def split_line(line):
 
 
 def main():
-
     my_file = open("dictionary.txt")
-
     dictionary_list = []
-
     for line in my_file:
         line = line.strip()
         dictionary_list.append(line)
-
+    my_file.close()
     print("--- Linear Search ---")
 
 # --- Linear search
 
-    my_alice = open("AliceInWonderLand200.txt")
-
-    for line in my_alice:
+    alice_file = open("AliceInWonderLand200.txt")
+    line_number = 0
+    for line in alice_file:
+        line_number += 1
         word_list = split_line(line)
+        for word in word_list:
+            current_list_position = 0
 
-    current_list_position = 0
+            while current_list_position < len(dictionary_list) and dictionary_list[current_list_position] != word.upper():
+                current_list_position += 1
 
-    while current_list_position < len(dictionary_list) and dictionary_list[current_list_position] != word_list:
+            if current_list_position == len(dictionary_list):
+                print("line " + str (line_number) + " Possible Mispelled word: " + word)
+    alice_file.close()
 
-        current_list_position += 1
+    print("--- Binary Search ---")
 
-    if current_list_position < len(dictionary_list):
-        print("The name is at position", current_list_position)
-    else:
-        print("The name was not in the list.")
+    alice_file = open("AliceInWonderLand200.txt")
+    line_number = 0
+    for line in alice_file:
+        line_number += 1
+        word_list = split_line(line)
+        for word in word_list:
+            lower_bound = 0
+            upper_bound = len(dictionary_list) - 1
+            found = False
+
+            while lower_bound <= upper_bound and not found:
+
+                middle_pos = (lower_bound + upper_bound) // 2
+
+                if dictionary_list[middle_pos] < word.upper():
+                    lower_bound = middle_pos + 1
+                elif dictionary_list[middle_pos] > word.upper():
+                    upper_bound = middle_pos - 1
+                else:
+                    found = True
+            if not found:
+                print("line " + str(line_number) + " Possible Mispelled word: " + word)
+    alice_file.close()
 
 
 main()
