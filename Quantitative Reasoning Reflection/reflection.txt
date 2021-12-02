@@ -48,7 +48,10 @@ problems, but with humans it can be tricky to using methods to make decisions.
 For example, with algorithms, you are telling the server to do something based on
 your code and possible positioning. But when you try to tell others what to do,
 then it can become something you are not going to expect like coding. When it
-comes to athletes, stats can be made on pretty much anything, but the limitation
-come down to the "nitty girtty" stuff, like how many times someone
+comes to evaluating teachers on how their students do, there are multiple
+possibilities. On the occasion, there is always a student who struggles in the
+course but everyone else does well. No one is ever going to be 100% in a whole
+which lets the professor helps other students to make sure they are on the
+right track.
 
 
