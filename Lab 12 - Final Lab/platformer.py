@@ -61,15 +61,16 @@ class MyGame(arcade.Window):
         # Set up the player
         self.player_sprite = arcade.Sprite(":resources:images/animated_characters/female_person/femalePerson_idle.png",
                                            scale=0.4)
-        self.player_sprite.center_x = 256
-        self.player_sprite.center_y = 512
+        self.player_sprite.center_x = 300
+        self.player_sprite.center_y = 100
         self.player_list.append(self.player_sprite)
 
         map_name = "test.json"
         self.title_map = arcade.load_tilemap(map_name, scaling=SPRITE_SCALING)
         self.wall_list = self.title_map.sprite_lists["Walls"]
 
-        self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite, self.wall_list, gravity_constant=0.5)
+        self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite, self.wall_list,
+                                                             gravity_constant=0.5)
 
         # Set the background color
         if self.title_map.background_color:
@@ -108,7 +109,7 @@ class MyGame(arcade.Window):
 
         if key == arcade.key.UP:
             if self.physics_engine.can_jump():
-                self.player_sprite.change_y = 10
+                self.player_sprite.change_y = 20
         elif key == arcade.key.LEFT:
             self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.RIGHT:
