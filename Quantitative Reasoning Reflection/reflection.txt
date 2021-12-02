@@ -1,0 +1,54 @@
+Katie Burns
+December 1st, 2021
+Quantitative Reasoning Assignment
+
+Question 1:
+    There are multiple different kinds of methods when it comes to programming.
+When it comes to If statements, it allows ya computer to make a decision and
+can decide which block of code to run based on the statement. For example, we
+used if statements when it comes to the Adventure game Lab we did. We used this
+to show what to print if the person was going in a certain direction.
+
+    When it comes to loops, you mostly use them when it comes to coding a game.
+A lot of games tie into for loops to ensure there is multiple objects within the
+frame. For example, we used loops in our loop lab to have certain numbers go in
+the direction the file is shown on the preview with for loops.
+
+    Another big one we have used throughout this semester was Class. They have
+function that exists inside a class. For example, we used the class method to
+position, color, and size of the object. Then, the def draw function comes into
+play to make the ball an actual object. Making multiple classes is ideal when it
+comes to having different objects in your game to keep it organized.
+
+
+Question 2:
+    When I communicate solutions from one programmer to another when writing
+code, I used comments to help communicate how I got that code. This helps ensure
+the person knows how I got the answer and what the effect of it is. Variable names
+play a key part in the programming system and keeping them organized. If you
+were to have one variable for one object, it will make the program confused
+and unorganized. Structure is also a key solution in programming. Indentation
+plays a role in structure by how to reflect on the outcome of a certain object,
+such as for loops. If indentation is incorrect, an error will follow for the code
+to work.
+
+Question 3:
+    Testing the accuracy of my code reflected in many ways. One way was to run the
+code I have started to keep up to date on how the code looks. I would see if there
+are any warning or errors by looking on the side of the screen. I would see if
+the changes I made were correct by making sure the lines on the right side of the
+screen were clear or green to ensure the code is done properly. Another thing I
+do is look for the warnings within the terminal. If there is warning in the
+terminal, the code will not work. Making sure those are all cleared out will
+ensure a processed code.
+
+Question 4:
+    Numerical methods is all about computer method for solving mathematical
+problems, but with humans it can be tricky to using methods to make decisions.
+For example, with algorithms, you are telling the server to do something based on
+your code and possible positioning. But when you try to tell others what to do,
+then it can become something you are not going to expect like coding. When it
+comes to athletes, stats can be made on pretty much anything, but the limitation
+come down to the "nitty girtty" stuff, like how many times someone
+
+
